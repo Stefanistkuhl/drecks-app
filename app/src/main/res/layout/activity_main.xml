@@ -6,29 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MACH FOTO DU DUMMER HS"
-        />
-
-    <Button
+     <Button
         android:id="@+id/btncamera_id"
-        android:layout_width="match_parent"
+        android:layout_width="251dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text"
-        android:text="KAMERA"
         android:layout_centerHorizontal="true"
-        />
+        android:layout_marginTop="0dp"
+
+        android:text="KAMERA"
+         tools:ignore="ExtraText" />
 
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/btncamera_id"
+
         />
 
 </RelativeLayout>

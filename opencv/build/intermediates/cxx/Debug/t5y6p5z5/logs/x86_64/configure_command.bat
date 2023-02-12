@@ -1,0 +1,19 @@
+@echo off
+"C:\\Users\\stefa\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\cmake.exe" ^
+  "-HS:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\libcxx_helper" ^
+  "-DCMAKE_SYSTEM_NAME=Android" ^
+  "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON" ^
+  "-DCMAKE_SYSTEM_VERSION=21" ^
+  "-DANDROID_PLATFORM=android-21" ^
+  "-DANDROID_ABI=x86_64" ^
+  "-DCMAKE_ANDROID_ARCH_ABI=x86_64" ^
+  "-DANDROID_NDK=C:\\Users\\stefa\\AppData\\Local\\Android\\Sdk\\ndk\\23.1.7779620" ^
+  "-DCMAKE_ANDROID_NDK=C:\\Users\\stefa\\AppData\\Local\\Android\\Sdk\\ndk\\23.1.7779620" ^
+  "-DCMAKE_TOOLCHAIN_FILE=C:\\Users\\stefa\\AppData\\Local\\Android\\Sdk\\ndk\\23.1.7779620\\build\\cmake\\android.toolchain.cmake" ^
+  "-DCMAKE_MAKE_PROGRAM=C:\\Users\\stefa\\AppData\\Local\\Android\\Sdk\\cmake\\3.18.1\\bin\\ninja.exe" ^
+  "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=S:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\build\\intermediates\\cxx\\Debug\\t5y6p5z5\\obj\\x86_64" ^
+  "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=S:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\build\\intermediates\\cxx\\Debug\\t5y6p5z5\\obj\\x86_64" ^
+  "-DCMAKE_BUILD_TYPE=Debug" ^
+  "-BS:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\.cxx\\Debug\\t5y6p5z5\\x86_64" ^
+  -GNinja ^
+  "-DANDROID_STL=c++_shared"

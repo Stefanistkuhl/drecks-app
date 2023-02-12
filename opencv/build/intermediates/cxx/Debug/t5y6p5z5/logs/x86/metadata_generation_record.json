@@ -1,0 +1,44 @@
+[
+  {
+    "level_": 0,
+    "message_": "Start JSON generation. Platform version: 21 min SDK version: x86",
+    "file_": "S:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -1412124923
+  },
+  {
+    "level_": 0,
+    "message_": "JSON \u0027S:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\.cxx\\Debug\\t5y6p5z5\\x86\\android_gradle_build.json\u0027 was up-to-date",
+    "file_": "S:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -531279411
+  },
+  {
+    "level_": 0,
+    "message_": "JSON generation completed without problems",
+    "file_": "S:\\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\\drecks-app\\opencv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "debug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -1620235758
+  }
+]
