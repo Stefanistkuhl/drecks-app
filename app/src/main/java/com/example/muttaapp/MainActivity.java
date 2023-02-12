@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -73,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
             File myDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), folderName);
             myDir.mkdirs();
+
+            String filename_exists = dateFormat + ".png";
+            EditText editText = (EditText) findViewById(R.id.editText);
+            if (CheckDate.checkIfPictureExists(this, filename_exists)) {
+                editText.setText("Image today already taken");
+            } else {
+                editText.setText("Not an Image taken today");
+            }
 
             ImageEditor imageEditor = new ImageEditor();
             ImageEditor.setImage(photo);

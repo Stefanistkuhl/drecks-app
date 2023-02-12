@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 rootProject.name = "muttaapp"
 include ':app'
 include ':sdk'
-include ':opencv'

@@ -1,2 +1,0 @@
-ninja: Entering directory `S:\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH\drecks-app\opencv\.cxx\Debug\t5y6p5z5\x86_64'
-ninja: no work to do.
