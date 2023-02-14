@@ -31,6 +31,18 @@ public class ImageEditor {
         image = BitmapFactory.decodeFile(file.getAbsolutePath());
         //System.out.println(file.getAbsolutePath());
     }
+
+    public static int getheight(@NonNull Bitmap bmp){
+        int height = bmp.getHeight();
+        return height;
+    }
+
+    public static int getwidth(@NonNull Bitmap bmp){
+        int width = bmp.getWidth();
+        return width;
+    }
+
+
     public static Bitmap addBorder(@NonNull Bitmap bmp, int borderWidth, int borderHeight, int color){
         /*
         float aspectRatio = (float) bmp.getWidth() / bmp.getHeight();
@@ -51,7 +63,8 @@ public class ImageEditor {
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(10);
-        canvas.drawText(text.format(new Date()), 55, 55, paint);
+
+        canvas.drawText(text.format(new Date()), 50, 45, paint);
         return bmpWithText;
     }
     public void saveImage(@NonNull Context context, @NonNull SimpleDateFormat dateFormat){

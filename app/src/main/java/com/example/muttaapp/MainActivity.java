@@ -44,7 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         btnpicture = findViewById(R.id.btncamera_id);
         imageView = findViewById(R.id.imageview);
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date();
+        String filename_exists = dateFormat.format(date) + ".png";
+        System.out.println(filename_exists);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        if (CheckDate.checkIfPictureExists(this, filename_exists)) {
+            editText.setText("Image today already taken");
+        } else {
+            editText.setText("Not an Image taken today");
+        }
         btnpicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,17 +84,22 @@ public class MainActivity extends AppCompatActivity {
                     Environment.DIRECTORY_PICTURES), folderName);
             myDir.mkdirs();
 
-            String filename_exists = dateFormat + ".png";
-            EditText editText = (EditText) findViewById(R.id.editText);
-            if (CheckDate.checkIfPictureExists(this, filename_exists)) {
-                editText.setText("Image today already taken");
-            } else {
-                editText.setText("Not an Image taken today");
-            }
+
 
             ImageEditor imageEditor = new ImageEditor();
+
+            int get_height = imageEditor.getheight(photo);
+            int get_width = imageEditor.getwidth(photo);
+            float float_border_width = (float) (get_width * 0.21);
+            float float_border_height = (float) (get_width * 0.45);
+            int border_width = (int) Math.round(float_border_width/10.0)*10;
+            int border_height = (int) Math.round(float_border_height/10.0)*10;
+            int text_x = border_height;
+            int text_y = border_width/2;
+            //System.out.println(border_width);
+
             ImageEditor.setImage(photo);
-            Bitmap bmpWithBorder = ImageEditor.addBorder(photo, 40,60, Color.BLACK);
+            Bitmap bmpWithBorder = ImageEditor.addBorder(photo, border_width,border_height, Color.BLACK);
             String date = dateFormat.format(new Date());
             String fileName = date + ".png";
             File storageDir = new File(Environment.getExternalStoragePublicDirectory(
