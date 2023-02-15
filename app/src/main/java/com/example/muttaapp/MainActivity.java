@@ -1,34 +1,25 @@
 package com.example.muttaapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.content.ContentValues;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     Button btnpicture;
     ImageView imageView;
 
+    private String mSelectedColor;
+    private String mSelectedtextColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +38,24 @@ public class MainActivity extends AppCompatActivity {
 
         btnpicture = findViewById(R.id.btncamera_id);
         imageView = findViewById(R.id.imageview);
+
+        SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        mSelectedColor = sharedPref.getString("selected_color", null);
+
+        SharedPreferences sharedPref_text = getSharedPreferences("user_text_prefs", Context.MODE_PRIVATE);
+        mSelectedtextColor = sharedPref_text.getString("select_text_color", null);
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date();
         String filename_exists = dateFormat.format(date) + ".png";
-        System.out.println(filename_exists);
-        EditText editText = (EditText) findViewById(R.id.editText);
+       //System.out.println(filename_exists);
+        TextView editText = (TextView) findViewById(R.id.TextView_check);
         if (CheckDate.checkIfPictureExists(this, filename_exists)) {
             editText.setText("Image today already taken");
         } else {
             editText.setText("Not an Image taken today");
         }
+
         btnpicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,10 +64,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, REQUEST_CODE);
 
             }
+
         });
 
-    }
 
+
+        Button btnSettings = findViewById(R.id.btn_settings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settingsIntent = new Intent(MainActivity.this, Settings.class);
+                startActivity(settingsIntent);
+            }
+        });
+    }
     private Bitmap mTakenImage;
 
     @Override
@@ -97,15 +109,39 @@ public class MainActivity extends AppCompatActivity {
             int text_x = border_height;
             int text_y = border_width/2;
             //System.out.println(border_width);
+            int border_color = Color.BLACK;
+
+            if (mSelectedColor != null){
+                if(mSelectedColor.equals("Black")){
+                    border_color = Color.BLACK;
+                }else if(mSelectedColor.equals("White")){
+                    border_color = Color.WHITE;
+                }
+
+            }
+
+            int text_color = Color.WHITE;
+
+            if (mSelectedtextColor != null){
+                if(mSelectedtextColor.equals("Black")){
+                    text_color = Color.BLACK;
+                }else if(mSelectedtextColor.equals("White")){
+                    text_color = Color.WHITE;
+                }
+
+            }
+
+            System.out.println("selected_color ist " + mSelectedColor + " border_color ist " + border_color);
+            System.out.println("selected_text_color ist " + mSelectedtextColor + " text_color ist "+ text_color);
 
             ImageEditor.setImage(photo);
-            Bitmap bmpWithBorder = ImageEditor.addBorder(photo, border_width,border_height, Color.BLACK);
+            Bitmap bmpWithBorder = ImageEditor.addBorder(photo, border_width,border_height, border_color);
             String date = dateFormat.format(new Date());
             String fileName = date + ".png";
             File storageDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), "MyAppImages");
             File imageFile = new File(storageDir, fileName);
-            Bitmap bmpWithText = ImageEditor.addText(bmpWithBorder, dateFormat_text, Color.WHITE);
+            Bitmap bmpWithText = ImageEditor.addText(bmpWithBorder, dateFormat_text, text_color);
 
             try {
                 FileOutputStream fos = new FileOutputStream(imageFile);

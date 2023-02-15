@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">muttaapp</string>
+    <string name="app_name">fake minutiae</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="select_color">select_color</string>
+    <string-array name="colors">
+        <item>Black</item>
+        <item>White</item>
+    </string-array>
+
+    <string name="select_text_color">select_text_color</string>
+    <string-array name="text_colors">
+        <item>Black</item>
+        <item>White</item>
+    </string-array>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
