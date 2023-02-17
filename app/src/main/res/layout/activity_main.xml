@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
      <Button
@@ -17,13 +16,17 @@
         android:layout_marginTop="0dp"
 
         android:text="KAMERA"
+         android:textColor="@color/white"
          tools:ignore="ExtraText" />
 
     <Button
         android:id="@+id/btn_settings"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="-5dp"
         android:background="@drawable/settings_icon_v2"
+        app:layout_constraintTop_toTopOf="@+id/btncamera_id"
 
         />
 

@@ -61,7 +61,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, REQUEST_CODE);
+                cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+                cameraIntent.putExtra("android.intent.extras.CAMERA_FACING_FRONT", 0);
+                //cameraIntent.putExtra("android.intent.extra.sizeLimit", 2097152);
+                cameraIntent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+                cameraIntent.putExtra("compress", false);
+                cameraIntent.putExtra("quality", 100);
+                cameraIntent.putExtra("outputX", 1080);
+                cameraIntent.putExtra("outputY", 1920);
+                cameraIntent.putExtra("aspectX", 9);
+                cameraIntent.putExtra("aspectY", 16);
+
+                Intent chooserIntent = Intent.createChooser(cameraIntent, "Select Camera App");
+                if (chooserIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(cameraIntent, REQUEST_CODE);
+                }
+
 
             }
 
@@ -82,9 +97,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode,resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
+
+            int desiredWidth = 1080;
+            int desiredHeight = 1920;
+
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(photo, desiredWidth, desiredHeight, true);
 
 
             // Format the current date and time as a string
@@ -100,14 +121,21 @@ public class MainActivity extends AppCompatActivity {
 
             ImageEditor imageEditor = new ImageEditor();
 
-            int get_height = imageEditor.getheight(photo);
-            int get_width = imageEditor.getwidth(photo);
+            float float_height = imageEditor.getheight(resizedBitmap);
+            float float_width = imageEditor.getwidth(resizedBitmap);
+            float float_border_width2 = (float) (float_width * 0.21);
+            float float_border_height2 = (float) (float_height * 0.45);
+
+            int get_height = imageEditor.getheight(resizedBitmap);
+            int get_width = imageEditor.getwidth(resizedBitmap);
             float float_border_width = (float) (get_width * 0.21);
             float float_border_height = (float) (get_width * 0.45);
             int border_width = (int) Math.round(float_border_width/10.0)*10;
             int border_height = (int) Math.round(float_border_height/10.0)*10;
             int text_x = border_height;
             int text_y = border_width/2;
+            float text_size = (float) border_height/4;
+
             //System.out.println(border_width);
             int border_color = Color.BLACK;
 
@@ -131,23 +159,29 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            System.out.println("selected_color ist " + mSelectedColor + " border_color ist " + border_color);
-            System.out.println("selected_text_color ist " + mSelectedtextColor + " text_color ist "+ text_color);
+            //System.out.println("selected_color ist " + mSelectedColor + " border_color ist " + border_color);
+            //System.out.println("selected_text_color ist " + mSelectedtextColor + " text_color ist "+ text_color);
 
-            ImageEditor.setImage(photo);
-            Bitmap bmpWithBorder = ImageEditor.addBorder(photo, border_width,border_height, border_color);
+            ImageEditor.setImage(resizedBitmap);
+            Bitmap bmpWithBorder = ImageEditor.addBorder(resizedBitmap, border_width,border_height, border_color);
             String date = dateFormat.format(new Date());
             String fileName = date + ".png";
             File storageDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), "MyAppImages");
             File imageFile = new File(storageDir, fileName);
-            Bitmap bmpWithText = ImageEditor.addText(bmpWithBorder, dateFormat_text, text_color);
+            float middleX = bmpWithBorder.getWidth() / 2f;
+            float middleY = bmpWithBorder.getHeight() / 2f;
+            float hoehetext = (bmpWithBorder.getHeight() * -1)+border_height;
+            float hoehetextv2 = border_width/2+(border_height/1.5f);
+            //System.out.println("höhe text is "+hoehetext);
+
+            Bitmap bmpWithText = ImageEditor.addText(bmpWithBorder, dateFormat_text, text_color, middleX, hoehetextv2, text_size);
 
             try {
                 FileOutputStream fos = new FileOutputStream(imageFile);
                 bmpWithText.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.close();
-                Toast.makeText(this, "Image saved!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Image saved!", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(this, "Failed to save image!", Toast.LENGTH_SHORT).show();
             }

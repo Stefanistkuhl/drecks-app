@@ -8,9 +8,9 @@
 
     <Spinner
         android:id="@+id/spinner_select_color"
-        android:layout_width="47dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="68dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="88dp"
         android:layout_marginTop="39dp"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,15 +21,19 @@
         android:layout_height="31dp"
         android:layout_marginStart="112dp"
         android:layout_marginTop="100dp"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="6dp"
+        android:padding="8dp"
         android:text="Select Color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/spinner_select_color" />
@@ -38,7 +42,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="31dp"
         android:layout_marginTop="64dp"
         android:text="Select Text Color"
         app:layout_constraintStart_toStartOf="parent"

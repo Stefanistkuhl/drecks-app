@@ -26,7 +26,7 @@ public class ImageEditor {
         return image;
     }
     public void loadImageWithCurrentDate(@NonNull Context context, @NonNull SimpleDateFormat dateFormat){
-        String fileName = dateFormat.format(new Date()) + ".jpg";
+        String fileName = dateFormat.format(new Date()) + ".png";
         File file = new File(context.getFilesDir(), fileName);
         image = BitmapFactory.decodeFile(file.getAbsolutePath());
         //System.out.println(file.getAbsolutePath());
@@ -56,24 +56,25 @@ public class ImageEditor {
         canvas.drawBitmap(bmp, borderWidth, borderHeight, null);
         return bmpWithBorder;
     }
-    public static Bitmap addText(@NonNull Bitmap bmpWithBorder, SimpleDateFormat text, int color){
+    public static Bitmap addText(@NonNull Bitmap bmpWithBorder, SimpleDateFormat text, int color, float textx, float texty, float text_size){
         Bitmap bmpWithText = Bitmap.createBitmap(bmpWithBorder.getWidth(), bmpWithBorder.getHeight(), bmpWithBorder.getConfig());
         Canvas canvas = new Canvas(bmpWithText);
         canvas.drawBitmap(bmpWithBorder, 0 , 0, null);
         Paint paint = new Paint();
         paint.setColor(color);
-        paint.setTextSize(10);
-
-        canvas.drawText(text.format(new Date()), 50, 45, paint);
+        paint.setTextSize(text_size);
+        paint.setTextAlign(Paint.Align.CENTER);
+        //canvas.drawText(text.format(new Date()), 50, 45, paint);
+        canvas.drawText(text.format(new Date()), textx, texty, paint);
         return bmpWithText;
     }
     public void saveImage(@NonNull Context context, @NonNull SimpleDateFormat dateFormat){
-        String fileName = dateFormat.format(new Date()) + ".jpg";
+        String fileName = dateFormat.format(new Date()) + ".png";
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File file = new File(path, fileName);
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            image.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            image.compress(Bitmap.CompressFormat.PNG, 0, fos);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
