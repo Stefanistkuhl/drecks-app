@@ -10,9 +10,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@android:drawable/ic_dialog_alert"
-        android:label="ich brauch nen app namen"
-        android:roundIcon="@android:drawable/ic_dialog_alert"
+        android:icon="@mipmap/logo_rund"
+        android:label="Retrofade"
+        android:roundIcon="@mipmap/logo_rund"
         android:supportsRtl="true"
         android:theme="@style/Theme.Muttaapp"
         tools:targetApi="31">
