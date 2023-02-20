@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".MainActivity">
+    tools:context="at.logbait.retrofade.MainActivity">
 
      <Button
         android:id="@+id/btncamera_id"
@@ -23,9 +23,12 @@
         android:id="@+id/btn_settings"
         android:layout_width="60dp"
         android:layout_height="60dp"
+
         android:layout_marginStart="0dp"
         android:layout_marginTop="-5dp"
-        android:background="@drawable/settings_icon_v2"
+        android:background="@drawable/settingsig"
+        android:scaleX=".5"
+        android:scaleY=".5"
         app:layout_constraintTop_toTopOf="@+id/btncamera_id"
 
         />
