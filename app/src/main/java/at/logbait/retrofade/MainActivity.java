@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PackageManagerCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private String mSelectedColor;
     private String mSelectedtextColor;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnpicture = findViewById(R.id.btncamera_id);
         imageView = findViewById(R.id.imageview);
+
+
 
         SharedPreferences sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         mSelectedColor = sharedPref.getString("selected_color", null);
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date();
         String filename_exists = dateFormat.format(date) + ".png";
-       //System.out.println(filename_exists);
+        //System.out.println(filename_exists);
         TextView editText = (TextView) findViewById(R.id.TextView_check);
         if (CheckDate.checkIfPictureExists(this, filename_exists)) {
             editText.setText("Image today already taken");
@@ -67,6 +72,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        List<String> permissionsToRequest = new ArrayList<>();
+
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(permission);
+            }
+        }
+
+        if (!permissionsToRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), REQUEST_CODE);
+        }
 
         btnpicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,11 +115,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button btnSettings = findViewById(R.id.btn_settings);
+        Button btnGallery = findViewById(R.id.btn_gallery);
+
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent settingsIntent = new Intent(MainActivity.this, Settings.class);
                 startActivity(settingsIntent);
+            }
+        });
+
+        btnGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(MainActivity.this, Gallery.class);
+                startActivity(galleryIntent);
             }
         });
     }
