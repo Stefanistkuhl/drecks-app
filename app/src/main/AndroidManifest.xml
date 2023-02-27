@@ -11,7 +11,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/logo_rund"
         android:label="Retrofade"
         android:largeHeap="true"
@@ -19,6 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Muttaapp"
         tools:targetApi="31">
+        <activity
+            android:name="at.logbait.retrofade.FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_fullscreen"
+            android:theme="@style/Theme.Muttaapp.Fullscreen" />
         <activity
             android:name="at.logbait.retrofade.Gallery"
             android:exported="false">

@@ -1,8 +1,10 @@
 package at.logbait.retrofade;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.gallery_item, parent, false);
+        Log.d("GalleryAdapter", "Number of items: " + mImageList.size());
+
         return new ViewHolder(view);
     }
 
@@ -35,6 +39,17 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         String imagePath = mImageList.get(position);
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         holder.mImageView.setImageBitmap(bitmap);
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, FullscreenActivity.class);
+                intent.putExtra("image_path", imagePath);
+                mContext.startActivity(intent);
+                Log.d("GalleryAdapter", "Image path: " + imagePath);
+            }
+        });
+
+
     }
 
     @Override
