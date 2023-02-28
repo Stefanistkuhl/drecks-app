@@ -2,21 +2,31 @@ package at.logbait.retrofade;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.muttaapp.R;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 //import at.logbait.retrofade.databinding.ActivityFullscreenBinding;
@@ -117,19 +127,39 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fullscreen);
+        binding = ActivityFullscreenBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         String imagePath = getIntent().getStringExtra("image_path");
 
-        mImageView = findViewById(R.id.fullscreen_image_view);
+        mImageView = binding.fullscreenImageView;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-        mImageView.setImageBitmap(bitmap);
+        Glide.with(this)
+                .load(imagePath)
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        int width = resource.getIntrinsicWidth();
+                        int height = resource.getIntrinsicHeight();
+
+
+                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width/2, height/2);
+                        params.gravity = Gravity.CENTER;
+                        mImageView.setLayoutParams(params);
+                        mImageView.setImageDrawable(resource);
+                        mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                        Log.d("fullscreen" ,"image_path" +imagePath);
+                        Log.d("fullscreen", "mImageView size: " + mImageView.getWidth() + "x" + mImageView.getHeight());
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        binding = ActivityFullscreenBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
         mVisible = true;
         mControlsView = binding.fullscreenContentControls;
@@ -138,7 +168,8 @@ public class FullscreenActivity extends AppCompatActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Glide.with(FullscreenActivity.this).load(imagePath).into(mImageView);
+                Log.d("fullscreen", "auf imageview geklickt");
             }
         });
 
@@ -153,9 +184,8 @@ public class FullscreenActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
-    }
 
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/fullscreenBackgroundColor"
+    android:background="@color/material_dynamic_primary0"
     android:theme="@style/ThemeOverlay.Muttaapp.FullscreenContainer"
     tools:context="at.logbait.retrofade.FullscreenActivity">
 
@@ -13,8 +13,7 @@
         android:id="@+id/fullscreen_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
+        android:scaleType="centerCrop"
         />
 
     <!-- This FrameLayout insets its children based on system windows using
@@ -22,7 +21,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        >
 
         <LinearLayout
             android:id="@+id/fullscreen_content_controls"
@@ -33,13 +33,7 @@
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
-            <Button
-                android:id="@+id/dummy_button"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dummy_button" />
+
 
         </LinearLayout>
     </FrameLayout>
