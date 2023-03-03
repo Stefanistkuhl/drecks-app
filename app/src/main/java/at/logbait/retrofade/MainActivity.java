@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 22;
@@ -151,7 +152,8 @@ public class MainActivity extends AppCompatActivity {
             // Format the current date and time as a string
             //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat dateFormat_text = new SimpleDateFormat("dd.MM.yyyy:hh:ss");
+            SimpleDateFormat dateFormat_text = new SimpleDateFormat("dd.MM.yyyy:HH:mm");
+            dateFormat_text.setTimeZone(TimeZone.getDefault());
             String folderName = "MyAppImages";
             File myDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), folderName);
