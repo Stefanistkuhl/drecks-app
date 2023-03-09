@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/material_dynamic_primary0"
     android:theme="@style/ThemeOverlay.Muttaapp.FullscreenContainer"
     tools:context="at.logbait.retrofade.FullscreenActivity">
@@ -9,11 +10,19 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <ImageView
+    <com.jsibbold.zoomage.ZoomageView
         android:id="@+id/fullscreen_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        app:zoomage_restrictBounds="false"
+        app:zoomage_animateOnReset="true"
+        app:zoomage_autoResetMode="UNDER"
+        app:zoomage_autoCenter="true"
+        app:zoomage_zoomable="true"
+        app:zoomage_translatable="true"
+        app:zoomage_minScale="0.6"
+        app:zoomage_maxScale="8"
         />
 
     <!-- This FrameLayout insets its children based on system windows using

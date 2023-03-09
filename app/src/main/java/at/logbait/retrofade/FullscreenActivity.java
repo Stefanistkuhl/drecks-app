@@ -14,6 +14,7 @@ import com.example.muttaapp.R;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -33,6 +35,8 @@ import android.widget.ImageView;
 
 
 import com.example.muttaapp.databinding.ActivityFullscreenBinding;
+import com.jsibbold.zoomage.AutoResetMode;
+import com.jsibbold.zoomage.ZoomageView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -118,11 +122,16 @@ public class FullscreenActivity extends AppCompatActivity {
                 default:
                     break;
             }
+
+            // Enable translation for zoomage view
+            zoomageView.setTranslatable(true);
+
             return false;
         }
     };
     private ActivityFullscreenBinding binding;
     private ImageView mImageView;
+    private ZoomageView zoomageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,8 +140,24 @@ public class FullscreenActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         String imagePath = getIntent().getStringExtra("image_path");
-
+        zoomageView = (ZoomageView) findViewById(R.id.fullscreen_image_view);
+        zoomageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        zoomageView.setRestrictBounds(false);
+        zoomageView.setAnimateOnReset(true);
+        zoomageView.setAutoResetMode(AutoResetMode.UNDER);
+        zoomageView.setAutoCenter(true);
+        zoomageView.setZoomable(true);
+        zoomageView.setTranslatable(true);
+        //zoomageView.setMinScale(0.6f);
+        //zoomageView.setMaxScale(8f);
         mImageView = binding.fullscreenImageView;
+        if (zoomageView == null) {
+            Log.e("zoom", "Failed to find ZoomageView with ID fullscreen_image_view");
+            return;
+        }
+
+
+        Log.d("zoom", "ZoomageView initialized successfully");
 
         Glide.with(this)
                 .load(imagePath)
@@ -170,6 +195,7 @@ public class FullscreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Glide.with(FullscreenActivity.this).load(imagePath).into(mImageView);
                 Log.d("fullscreen", "auf imageview geklickt");
+                toggle();
             }
         });
 
@@ -177,7 +203,16 @@ public class FullscreenActivity extends AppCompatActivity {
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Rect rect = new Rect();
+                mImageView.getHitRect(rect);
+                if (!rect.contains((int) v.getX(), (int) v.getY())) {
+                    // If the tap event is not being captured, toggle the fullscreen view
+                    Glide.with(FullscreenActivity.this).load(imagePath).into(mImageView);
+                    Log.d("fullscreen", "auf imageview geklickt");
+                    toggle();
+                }
+
+            //finish();
             }
         });
 
