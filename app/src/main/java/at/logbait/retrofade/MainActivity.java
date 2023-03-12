@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         List<String> permissionsToRequest = new ArrayList<>();
 
         for (String permission : permissions) {
@@ -91,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+                //Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent cameraIntent = new Intent(MainActivity.this, Camera.class);
+                startActivity(cameraIntent);
+                /*cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
                 cameraIntent.putExtra("android.intent.extras.CAMERA_FACING_FRONT", 0);
                 //cameraIntent.putExtra("android.intent.extra.sizeLimit", 2097152);
                 cameraIntent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(cameraIntent, REQUEST_CODE);
                 }
 
+                 */
 
             }
 
@@ -140,7 +143,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode,resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            //Bitmap photo = (Bitmap) data.getExtras().get("data");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat_text = new SimpleDateFormat("dd.MM.yyyy:HH:mm");
+            dateFormat_text.setTimeZone(TimeZone.getDefault());
+            Bitmap photo = ImageEditor.loadImageWithCurrentDate(this, dateFormat);
             imageView.setImageBitmap(photo);
 
             int desiredWidth = 1080;
@@ -151,9 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Format the current date and time as a string
             //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat dateFormat_text = new SimpleDateFormat("dd.MM.yyyy:HH:mm");
-            dateFormat_text.setTimeZone(TimeZone.getDefault());
+
             String folderName = "MyAppImages";
             File myDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), folderName);

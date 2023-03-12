@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Environment;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -23,11 +24,13 @@ public class ImageEditor {
     public Bitmap getImage(){
         return image;
     }
-    public void loadImageWithCurrentDate(@NonNull Context context, @NonNull SimpleDateFormat dateFormat){
+    public static Bitmap loadImageWithCurrentDate(@NonNull Context context, @NonNull SimpleDateFormat dateFormat){
         String fileName = dateFormat.format(new Date()) + ".png";
         File file = new File(context.getFilesDir(), fileName);
+        Log.d("test","geht das?"+ file+" und das " + fileName);
         image = BitmapFactory.decodeFile(file.getAbsolutePath());
         //System.out.println(file.getAbsolutePath());
+        return image;
     }
 
     public static int getheight(@NonNull Bitmap bmp){

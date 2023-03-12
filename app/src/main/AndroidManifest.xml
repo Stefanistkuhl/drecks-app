@@ -3,9 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="at.logbait.retrofade">
 
+    <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"
+
+        />
 
     <application
         android:allowBackup="true"
@@ -20,21 +24,32 @@
         android:theme="@style/Theme.Muttaapp"
         tools:targetApi="31">
         <activity
-            android:name="at.logbait.retrofade.FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/Theme.Muttaapp.Fullscreen" />
-        <activity
-            android:name="at.logbait.retrofade.Gallery"
+            android:name="at.logbait.retrofade.Camera"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
+            android:name="at.logbait.retrofade.FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/empty_string"
+            android:theme="@style/Theme.Muttaapp.Fullscreen" />
+        <activity
+            android:name="at.logbait.retrofade.Gallery"
+            android:exported="false"
+            android:label="Gallery">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name="at.logbait.retrofade.Settings"
-            android:exported="false">
+            android:exported="false"
+            android:label="Settings"
+            >
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
