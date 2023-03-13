@@ -1,9 +1,10 @@
 package at.logbait.retrofade
 
+import android.content.pm.PackageManager
 import android.Manifest.permission.CAMERA
 import android.Manifest.permission_group.CAMERA
 import android.content.ContentValues
-import android.content.pm.PackageManager
+import java.util.concurrent.Executor
 import android.hardware.SensorPrivacyManager.Sensors.CAMERA
 import android.media.MediaRecorder.VideoSource.CAMERA
 import android.net.Uri
@@ -29,6 +30,8 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.Manifest
+import android.os.Environment
+import java.io.File
 
 
 typealias LumaListener = (luma: Double) -> Unit
@@ -51,7 +54,9 @@ class Camera : AppCompatActivity() {
         val imageCaptureButton = findViewById<Button>(R.id.image_capture_button)
 
         // Set up the listeners for take photo and video capture buttons
-        imageCaptureButton.setOnClickListener { takePhoto() }
+
+        imageCaptureButton.setOnClickListener {(Log.d("AHHHHHH","HALLO"))}
+        imageCaptureButton.setOnClickListener{takePhoto()}
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -95,87 +100,61 @@ class Camera : AppCompatActivity() {
     private var currentPhotoUri: Uri? = null
 
     private fun takePhoto() {
+        Log.d("AHHHHHH", "HALLO ICH WURDE ANGERUFEN")
         // Get a stable reference of the modifiable image capture use case
-        val imageCapture = imageCapture ?: return
-
-        // Create time stamped name and MediaStore entry.
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy")
-        dateFormat.timeZone = TimeZone.getDefault()
-        val currentDate = Date()
-        val filename = dateFormat.format(currentDate) + ".png"
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/MyAppImages")
+        val outputDirectory = File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES), "MyAppImages")
+        val executor = Executors.newSingleThreadExecutor()
+        val photoFile = File(outputDirectory, SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY).format(System.currentTimeMillis()) + ".png")
+        val outputFileOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+        imageCapture?.takePicture(outputFileOptions, executor, object : ImageCapture.OnImageSavedCallback {
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                // Display a message or update UI when the image is saved successfully
+                val msg = "Photo capture succeeded: ${photoFile.absolutePath}"
+                Toast.makeText(baseContext, msg, Toast.LENGTH_LONG).show()
             }
-        }
 
-        // Create output options object which contains file + metadata
-        val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues)
-            .build()
-
-        // Set up image capture listener, which is triggered after photo has
-        // been taken
-            imageCapture.takePicture(
-                outputOptions,
-                ContextCompat.getMainExecutor(this),
-                object : ImageCapture.OnImageSavedCallback {
-                    override fun onError(exc: ImageCaptureException) {
-                        Log.e("Camera", "Photo capture failed: ${exc.message}", exc)
-                    }
-
-                    override fun
-                            onImageSaved(output: ImageCapture.OutputFileResults) {
-                        val msg = "Photo capture succeeded: ${output.savedUri}"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                        Log.d("Camera", msg)
-                    }
-                }
-            )
-
+            override fun onError(exception: ImageCaptureException) {
+                // Display an error message or update UI when the image capture fails
+                val msg = "Photo capture failed: ${exception.message}"
+                Toast.makeText(baseContext, msg, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     private fun startCamera() {
+        // Get a camera provider instance
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
-        cameraProviderFuture.addListener({
-            // Used to bind the lifecycle of cameras to the lifecycle owner
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+        cameraProviderFuture.addListener(Runnable {
+            // Camera provider is now guaranteed to be available
+            val cameraProvider = cameraProviderFuture.get()
 
-            val imageCameraBuilder = ImageCapture.Builder()
-                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-
-            imageCapture = imageCameraBuilder.build()
-
-            // Preview
+            // Set up the view finder use case to display camera preview
             val preview = Preview.Builder()
                 .build()
-                .also {
+                .also{
                     val viewFinder = findViewById<androidx.camera.view.PreviewView>(R.id.viewFinder)
                     it.setSurfaceProvider(viewFinder.surfaceProvider)
                 }
 
-            imageCapture = ImageCapture.Builder()
+
+            // Set up the capture use case to allow users to take photos
+            val imageCapture = ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .build()
 
-            // Select back camera as a default
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            // Choose the camera by requiring a lens facing
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
 
-            try {
-                // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
-
-                // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview)
-
-            } catch(exc: Exception) {
-                Log.e("Camera", "Use case binding failed", exc)
-            }
+            // Attach use cases to the camera with the same lifecycle owner
+            val camera = cameraProvider.bindToLifecycle(
+                this, // LifecycleOwner
+                cameraSelector,
+                preview,
+                imageCapture)
 
         }, ContextCompat.getMainExecutor(this))
     }
