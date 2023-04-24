@@ -4,12 +4,11 @@
     package="at.logbait.retrofade">
 
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"
-
-        />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +22,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Muttaapp"
         tools:targetApi="31">
+        <activity
+            android:name="at.logbait.retrofade.Camera_besser"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name="at.logbait.retrofade.ImageSaveActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name="at.logbait.retrofade.Camera"
             android:exported="false">
@@ -47,9 +60,7 @@
         <activity
             android:name="at.logbait.retrofade.Settings"
             android:exported="false"
-            android:label="Settings"
-            >
-
+            android:label="Settings">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

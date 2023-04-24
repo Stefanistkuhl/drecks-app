@@ -13,4 +13,12 @@
         <item name="android:background">@drawable/shutter_xml</item>
         <item name="backgroundTint">@color/white</item>
     </style>
+    <style name ="hakerl_style" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/hakerl_xml</item>
+        <item name="backgroundTint">@color/white</item>
+    </style>
+    <style name ="x_style" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/x_xml</item>
+        <item name="backgroundTint">@color/white</item>
+    </style>
 </resources>

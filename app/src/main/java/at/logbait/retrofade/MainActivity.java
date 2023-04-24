@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                Intent cameraIntent = new Intent(MainActivity.this, Camera.class);
+                Intent cameraIntent = new Intent(MainActivity.this, Camera_besser.class);
                 startActivity(cameraIntent);
                 /*cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
                 cameraIntent.putExtra("android.intent.extras.CAMERA_FACING_FRONT", 0);
